@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+package api;
+
+option go_package="lesson2.11/api";
+
+import "google.protobuf/wrappers.proto";
+// 通知读者的消息
+message NoticeReaderRequest{
+    string msg = 1;
+    oneof notice_way{
+        string email = 2;
+        string phone = 3;
+    }
+}
+
+message Book {
+    string title = 1;
+    string author = 2;
+    // int64 price=4; //无法区分price传值没
+    google.protobuf.Int64Value price = 3;
+    google.protobuf.DoubleValue sale_price=4;
+    google.protobuf.StringValue memo=5;
+}
+

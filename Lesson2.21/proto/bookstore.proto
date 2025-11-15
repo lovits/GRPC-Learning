@@ -1,0 +1,62 @@
+syntax = "proto3";
+
+package proto;
+option go_package = "./proto;proto";
+
+import "google/api/annotations.proto";
+
+// 书店服务
+service Bookstore {
+  // 获取某个书架
+  rpc GetShelf(GetShelfRequest) returns (Shelf) {
+    option (google.api.http) = {
+      get: "/v1/shelves/{id}"
+    };
+  }
+
+  // 列出所有书架
+  rpc ListShelves(Empty) returns (ListShelvesResponse) {
+    option (google.api.http) = {
+      get: "/v1/shelves"
+    };
+  }
+
+  // 创建书架
+  rpc CreateShelf(Shelf) returns (Shelf) {
+    option (google.api.http) = {
+      post: "/v1/shelves"
+      body: "*"
+    };
+  }
+
+  // 更新书架
+  rpc UpdateShelf(Shelf) returns (Shelf) {
+    option (google.api.http) = {
+      put: "/v1/shelves/{id}"
+      body: "*"
+    };
+  }
+
+  // 删除书架
+  rpc DeleteShelf(GetShelfRequest) returns (Empty) {
+    option (google.api.http) = {
+      delete: "/v1/shelves/{id}"
+    };
+  }
+}
+
+// 消息类型
+message Empty {}
+
+message Shelf {
+  int64 id = 1;
+  string theme = 2;
+}
+
+message GetShelfRequest {
+  int64 id = 1;
+}
+
+message ListShelvesResponse {
+  repeated Shelf shelves = 1;
+}

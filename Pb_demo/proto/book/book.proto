@@ -1,0 +1,27 @@
+// demo/proto/book/book.proto
+//链接：https://www.liwenzhou.com/posts/Go/protobuf/
+syntax = "proto3";
+
+// 声明protobuf中的包名
+package book;
+
+// 声明生成的Go代码的导入路径
+option go_package = "Pb_demo/proto/book";
+
+// 引入同目录下的protobuf文件（注意起始位置为proto_path的下层）
+import "book/price.proto";
+import "author/author.proto";
+import "google/protobuf/timestamp.proto";
+message Book {
+    string title = 1;
+    //引用同目录的price.proto
+    Price price = 2;
+    //引入其他目录的proto
+    author.Info authInfo=3;
+    //引入官方proto（时间戳）
+    google.protobuf.Timestamp date=4;
+}
+
+service BookService{
+    rpc Create(Book)returns(Book);
+}

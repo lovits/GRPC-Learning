@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package helloworld;
+option go_package = "greeter/proto/helloworld";
+
+// 导入 grpc-gateway 的 http 映射
+import "google/api/annotations.proto";
+
+// 定义一个 Greeter 服务
+service Greeter {
+  rpc SayHello (HelloRequest) returns (HelloReply) {
+    option (google.api.http) = {
+      post: "/v1/example/echo"
+      body: "*"
+    };
+  }
+}
+
+// 定义请求与响应消息
+message HelloRequest {
+  string name = 1;
+}
+
+message HelloReply {
+  string message = 1;
+}

@@ -1,0 +1,59 @@
+syntax = "proto3";
+/* SearchRequest 表示一个分页查询 
+ * 其中有一些字段指示响应中包含哪些结果 */
+
+message SearchRequest {
+  string query = 1;
+  int32 page_number = 2;  // 页码数
+  int32 result_per_page = 3;  // 每页返回的结果数
+}
+
+message Foo {
+  reserved 2, 15, 9 to 11;
+  reserved "foo", "bar";
+}
+
+message SearchRequest {
+  string query = 1;
+  int32 page_number = 2;
+  int32 result_per_page = 3;
+  enum Corpus {
+    UNIVERSAL = 0;
+    WEB = 1;
+    IMAGES = 2;
+    LOCAL = 3;
+    NEWS = 4;
+    PRODUCTS = 5;
+    VIDEO = 6;
+  }
+  Corpus corpus = 4;
+}
+
+
+message MyMessage1 {
+  enum EnumAllowingAlias {
+    option allow_alias = true; //允许started和running重复，为别名
+    UNKNOWN = 0;
+    STARTED = 1;
+    RUNNING = 1;
+  }
+}
+message MyMessage2 {
+  enum EnumNotAllowingAlias {
+    UNKNOWN = 0;
+    STARTED = 1;
+    // RUNNING = 1;  // Uncommenting this line will cause a compile error inside Google and a warning message outside.
+  }
+}
+message SearchResponse {
+    repeated string ret=1;
+    SearchRequest.Corpus Corpus=2;
+    repeated Result results = 1;
+}
+
+message Result {
+  string url = 1;
+  string title = 2;
+  repeated string snippets = 3;
+}
+

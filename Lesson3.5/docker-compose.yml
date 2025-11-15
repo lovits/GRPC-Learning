@@ -1,0 +1,9 @@
+services:
+  consul:
+    image: consul:1.15.4   # 指定可用版本
+    container_name: consul
+    ports:
+      - "8500:8500"
+      - "8600:8600"
+    command: "agent -dev -client=0.0.0.0"
+    restart: unless-stopped
