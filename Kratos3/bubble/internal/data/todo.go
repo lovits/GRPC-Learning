@@ -29,19 +29,31 @@ func (r *todoRepo) Save(ctx context.Context, t *biz.Todo) (*biz.Todo, error) {
 }
 
 func (r *todoRepo) Update(ctx context.Context, t *biz.Todo) error {
-	return nil
+	return r.data.db.
+		WithContext(ctx).
+		Model(t).
+		Update("status", t.Status).Error
 }
 
 func (r *todoRepo) FindByID(ctx context.Context, id int64) (*biz.Todo, error) {
 	t := biz.Todo{ID: id}
-	err := r.data.db.First(&t).Error
+	err := r.data.db.
+		WithContext(ctx).
+		First(&t).Error
 	return &t, err
 }
 
-func (r *todoRepo) Delete(context.Context, int64) error {
-	return nil
+func (r *todoRepo) Delete(ctx context.Context, id int64) error {
+	t := biz.Todo{ID: id}
+	return r.data.db.
+		WithContext(ctx).
+		Delete(&t).Error
 }
 
-func (r *todoRepo) ListAll(context.Context) ([]*biz.Todo, error) {
-	return nil, nil
+func (r *todoRepo) ListAll(ctx context.Context) ([]*biz.Todo, error) {
+	var todoList []*biz.Todo
+	err := r.data.db.
+		WithContext(ctx).
+		Find(&todoList).Error
+	return todoList, err
 }

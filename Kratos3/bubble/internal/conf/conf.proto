@@ -29,7 +29,8 @@ message Server {
 message Data {
   message Database {
     string driver = 1;
-    string dsn = 2;
+    // string source = 2;
+    string dsn = 2; //改完后，config.yaml也要改
   }
   message Redis {
     string network = 1;

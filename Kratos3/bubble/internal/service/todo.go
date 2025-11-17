@@ -41,10 +41,16 @@ func (s *TodoService) CreateTodo(ctx context.Context, req *pb.CreateTodoRequest)
 	}, nil
 }
 func (s *TodoService) UpdateTodo(ctx context.Context, req *pb.UpdateTodoRequest) (*pb.UpdateTodoReply, error) {
-	return &pb.UpdateTodoReply{}, nil
+	err := s.uc.Update(ctx, &biz.Todo{
+		ID:     req.Id,
+		Title:  req.Title,
+		Status: req.Status,
+	})
+	return &pb.UpdateTodoReply{}, err
 }
 func (s *TodoService) DeleteTodo(ctx context.Context, req *pb.DeleteTodoRequest) (*pb.DeleteTodoReply, error) {
-	return &pb.DeleteTodoReply{}, nil
+	err := s.uc.Delete(ctx, req.Id)
+	return &pb.DeleteTodoReply{}, err
 }
 func (s *TodoService) GetTodo(ctx context.Context, req *pb.GetTodoRequest) (*pb.GetTodoReply, error) {
 	//1. 参数处理
@@ -66,5 +72,17 @@ func (s *TodoService) GetTodo(ctx context.Context, req *pb.GetTodoRequest) (*pb.
 	}, nil
 }
 func (s *TodoService) ListTodo(ctx context.Context, req *pb.ListTodoRequest) (*pb.ListTodoReply, error) {
-	return &pb.ListTodoReply{}, nil
+	datalist, err := s.uc.List(ctx)
+	if err != nil {
+		return nil, err
+	}
+	reply := &pb.ListTodoReply{}
+	for _, data := range datalist {
+		reply.Data = append(reply.Data, &pb.Todo{
+			Id:     data.ID,
+			Title:  data.Title,
+			Status: data.Status,
+		})
+	}
+	return reply, nil
 }
