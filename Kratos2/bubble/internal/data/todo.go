@@ -24,7 +24,7 @@ func NewTodoRepo(data *Data, logger log.Logger) biz.TodoRepo {
 
 func (r *todoRepo) Save(ctx context.Context, t *biz.Todo) (*biz.Todo, error) {
 	//实现数据库的操作
-	fmt.Printf("save:t:%#v\n", t)
+	fmt.Printf("save: t:%#v\n", t)
 	return t, nil
 }
 
